@@ -1,0 +1,24 @@
+#_________________________________________________________________________
+#DOS ATTACK DETECTION
+
+alert tcp any any -> 192.168.3.139 any (flags: S; msg:"Possible SYN DoS"; flow: stateless; threshold: type both, track by_dst, count 1000, seconds 3;)
+alert tcp any any -> 192.168.3.139 any (flags: A; msg:"Possible ACK DoS"; flow: stateless; threshold: type both, track by_dst, count 1000, seconds 3;)
+alert tcp any any -> 192.168.3.139 any (flags: R; msg:"Possible RST DoS"; flow: stateless; threshold: type both, track by_dst, count 1000, seconds 3;)
+alert tcp any any -> 192.168.3.139 any (flags: F; msg:"Possible FIN DoS"; flow: stateless; threshold: type both, track by_dst, count 1000, seconds 3;)
+alert udp any any -> 192.168.3.139 any (msg:"Possible UDP DoS"; flow: stateless; threshold: type both, track by_dst, count 1000, seconds 3;)
+
+
+#__________________________________________________________________________
+#PORT SCAN
+
+#nmap -sT -p22 192.168.3.139
+alert tcp any any -> 192.168.3.139 22 (msg: "NMAP TCP Scan"; )
+#nmap -sX -p22 192.168.3.139
+alert tcp any any -> 192.168.3.139 22 (msg:"Nmap XMAS Tree Scan"; flags:FPU; )
+#nmap -sF -p22 192.168.3.139
+alert tcp any any -> 192.168.3.139 22 (msg:"Nmap FIN Scan"; flags:F;  )
+#nmap -sN -p22 192.168.3.139
+alert tcp any any -> 192.168.3.139 22 (msg:"Nmap NULL Scan"; flags:0; )
+
+#nmap -sU -p68 192.168.3.139
+alert udp any any -> 192.168.3.139 any ( msg:"Nmap UDP Scan"; )

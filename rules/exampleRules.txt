@@ -1,0 +1,15 @@
+alert tcp any any -> 192.168.3.140 80 (msg:"Possible SYN DoS"; flags: S; flow: stateless; threshold: type both, track by_dst, count 1000, seconds 3;)
+alert tcp any any -> 192.168.3.140 80 (msg:"Possible ACK DoS"; flags: A; flow: stateless; threshold: type both, track by_dst, count 1000, seconds 3;)
+alert tcp any any -> 192.168.3.140 80 (msg:"Possible FIN DoS"; flags: F; flow: stateless; threshold: type both, track by_dst, count 1000, seconds 3;)
+alert udp any any -> 192.168.3.140 80 (msg:"Possible UDP DoS"; flags: U; flow: stateless; threshold: type both, track by_dst, count 1000, seconds 3;)
+
+alert tcp any any -> 192.168.3.140 22 (msg: "NMAP TCP Scan"; )
+alert tcp any any -> 192.168.3.140 22 (msg:"Nmap XMAS Tree Scan"; flags:FPU; )
+alert tcp any any -> 192.168.3.140 22 (msg:"Nmap FIN Scan"; flags:F;  )
+alert tcp any any -> 192.168.3.140 22 (msg:"Nmap NULL Scan"; flags:0; )
+alert udp any any -> 192.168.3.140 any ( msg:"Nmap UDP Scan"; )
+
+alert tcp any any -> 192.168.3.140 any (msg:"Possible SYN DoS"; flags:S)
+
+
+alert tcp any any -> 192.168.3.140 22 (msg:"Possible TCP RST Reset Attack"; flags: R)
